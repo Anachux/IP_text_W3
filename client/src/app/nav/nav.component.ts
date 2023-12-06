@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
+import { Observable, of } from 'rxjs';
+import { User } from '../model/User';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -7,21 +11,38 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
+
   model: { username: string | undefined, password: string | undefined } = {
       username: undefined,
       password: undefined
   }
-  isLogin = false
+  currentUser$: Observable<User | null> = of(null) // isLogin = false
+    router: any;
 
-    constructor(private accountService: AccountService) { }
-
-    login(): void {
-        this.accountService.login(this.model).subscribe({ //Observable
-            next: response => {
-                console.log(response)
-                this.isLogin = true
-            },
-            error: err => console.log(err) //anything that's not in 200 range of HTTP status
+    
+    constructor(private toastr: ToastrService, public accountService: AccountService) { }
+    ngOnInit(): void {
+        this.currentUser$ = this.accountService.currentUser$
+    }
+    getCurrentUser() {
+        this.accountService.currentUser$.subscribe({
+            next: user => {}, // user?true:false
+            error: err => console.log(err)
         })
+    }
+    login(): void {
+        this.accountService.login(this.model).subscribe({ //subscribe = Observable
+            next: response => {
+     
+                this.router.navigateByUrl('/members')
+
+            },
+            error: err => this.toastr.error(err.error)
+        })
+    }
+    logout() {
+        this.accountService.logout()
+        this.router.navigateByUrl('/')
+
     }
 }
