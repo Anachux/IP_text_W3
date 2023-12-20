@@ -31,15 +31,12 @@ export class NavComponent {
         })
     }
     login(): void {
-        this.accountService.login(this.model).subscribe({ //subscribe = Observable
-            next: response => {
-     
-                this.router.navigateByUrl('/members')
-
-            },
-            error: err => this.toastr.error(err.error)
+        this.accountService.login(this.model).subscribe({
+            next: _ => this.router.navigateByUrl('/members'),
+            // error: err => this.toastr.error(err.error)
         })
-    }
+        }
+    
     logout() {
         this.accountService.logout()
         this.router.navigateByUrl('/')

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1, h3, .text-danger {
+            color: #dc3545;
+        }
+
+        code {
+            display: block;
+            background-color: #f8d7da;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            color: #721c24;
+            font-family: 'Courier New', Courier, monospace; /* หรือเลือกแบบอักษรที่ชอบ */
+        }
+    </style>
+</head>
+<body>
+    <h1>500 : Internal Server Error</h1>
+    <h3>Sorry: something went wrong :(</h3>
+
+    <ng-container *ngIf="err">
+        <h5 class="text-danger">Error: {{err.messages}}</h5>
+        <code class="mt-5">{{err.details}}</code>
+    </ng-container>
+</body>
+</html>
