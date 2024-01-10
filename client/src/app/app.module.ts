@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -24,6 +24,11 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { ListsComponent } from './lists/lists.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { MemberProfileComponent } from './members/member-profile/member-profile.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
+
 
 
 @NgModule({
@@ -40,6 +45,9 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     //MemberDetailComponent,
     ListsComponent,
     MemberCardComponent,
+    MemberProfileComponent,
+    PhotoEditorComponent,
+    TextInputComponent,
    
   ],
   imports: [
@@ -51,9 +59,10 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     BsDropdownModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    SharedModule
+    SharedModule,ReactiveFormsModule,
   ],
   providers: [    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+   , { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

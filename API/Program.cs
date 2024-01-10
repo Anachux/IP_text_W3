@@ -38,4 +38,3 @@ catch (System.Exception e)
 }
 
 app.Run();
-app.Run();

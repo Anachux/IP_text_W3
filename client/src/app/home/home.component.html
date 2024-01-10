@@ -14,6 +14,7 @@
     <div *ngIf="regisMode" class="container">
         <div class="row justify-content-center">
             <div class="col-4">register form</div>
+            <app-register (isCancel)= "cancelRegister($event)"></app-register>
         </div>
     </div>
 </div>
