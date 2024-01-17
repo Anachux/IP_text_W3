@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Company.ClassLibrary1;
+namespace API.Extensions;
 
 public static class DateTimeExtensions {
     public static int CalculateAge(this DateOnly birthdate) {

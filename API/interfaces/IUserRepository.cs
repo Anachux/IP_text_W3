@@ -1,4 +1,6 @@
 ﻿using API.Entities;
+using API.Extensions;
+using API.Helpers;
 using Company.ClassLibrary1;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +13,8 @@ public interface IUserRepository
     Task<AppUser?> GetUserByIdAsync(int id);
     Task<AppUser?> GetUserByUserNameAsync(string username);
     Task<IEnumerable<AppUser>> GetUsersAsync();
-    Task<IEnumerable<MemberDto>> GetMembersAsync();
+    //Task<IEnumerable<MemberDto>> GetMembersAsync();
+    Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
     Task<MemberDto?> GetMember_By_user_name_Async(string username);
     Task<ActionResult<MemberDto?>> GetMemberAsync(string username);
     Task<ActionResult<MemberDto?>> GetMemberByUserNameAsync(string username);

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
+import { AccountService } from 'src/app/_services/account.service';
 import { MembersService } from 'src/app/_services/members.service';
+import { Pagination } from 'src/app/model/Pagination';
+import { User } from 'src/app/model/User';
 import { Member } from 'src/app/model/member';
+import { UserParams } from 'src/app/model/userparams';
 
 @Component({
   selector: 'app-member-list',
@@ -9,18 +13,55 @@ import { Member } from 'src/app/model/member';
   styleUrls: ['./member-list.component.css']
 })
 export class MemberListComponent implements OnInit {
-  members$: Observable<Member[]> | undefined
-  constructor(private memberService: MembersService) { }
-  ngOnInit(): void {
-    this.members$ = this.memberService.getMembers()
+  members: Member[] = []
+  pagination: Pagination | undefined
+  userParams: UserParams | undefined 
+  user: User | undefined 
+  // pageNumber = 1
+  // pageSize = 5
+  genderList = [
+    { value: 'male', display: 'Male' },
+    { value: 'fmale', display: 'Female' },
+    { value: 'non-binary', display: 'Non-binary' },
+  ]
+  resetFilters() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user)
+      this.loadMember()
+    }
   }
-  // ngOnInit(): void {
-  //   this.loadMember()
-  // }
+  constructor(private accountService: AccountService, private memberService: MembersService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => {
+        if (user) {
+          this.userParams = new UserParams(user)
+          this.user = user
+        }
+      }
+    })
+  }
 
-  // loadMember() {
-  //   this.memberService.getMembers().subscribe({
-  //     next: users => this.members = users
-  //   })
-  // }
+  ngOnInit(): void {
+    this.loadMember()
+  }
+
+  loadMember() {
+    if (!this.userParams) return 
+    this.memberService.getMembers(this.userParams).subscribe({
+      next: response => {
+        if (response.result && response.pagination) {
+          this.members = response.result
+          this.pagination = response.pagination
+        }
+      }
+    })
+  }
+
+  pageChanged(event: any) {
+    if (!this.userParams) return 
+    if (this.userParams.pageNumber === event.page) return 
+    this.userParams.pageNumber = event.page 
+    this.loadMember()
+  }
+  
 }

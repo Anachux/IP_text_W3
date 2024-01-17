@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using API.Extensions;
 using Company.ClassLibrary1;
 namespace API.Entities;
 [Table("Photos")]
