@@ -18,4 +18,5 @@ public interface IUserRepository
     Task<MemberDto?> GetMember_By_user_name_Async(string username);
     Task<ActionResult<MemberDto?>> GetMemberAsync(string username);
     Task<ActionResult<MemberDto?>> GetMemberByUserNameAsync(string username);
+    Task<AppUser?> GetUserByUserNameWithOutPhotoAsync(string username);
 }
