@@ -1,20 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, take } from 'rxjs';
-import { AccountService } from 'src/app/_services/account.service';
-import { MembersService } from 'src/app/_services/members.service';
-import { Pagination } from 'src/app/model/Pagination';
-import { User } from 'src/app/model/User';
-import { Member } from 'src/app/model/member';
-import { UserParams } from 'src/app/model/userparams';
+import { Component, OnInit } from "@angular/core"
+import { take } from "rxjs"
+import { AccountService } from "src/app/_services/account.service"
+import { MembersService } from "src/app/_services/members.service"
+import { Pagination } from "src/app/model/Pagination"
+import { User } from "src/app/model/User"
+import { Member } from "src/app/model/member"
+import { UserParams } from "src/app/model/userparams"
+
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.css']
 })
-
 export class MemberListComponent implements OnInit {
-  user: User | undefined 
+
+  genderList = [
+    { value: 'male', display: 'Male' },
+    { value: 'fmale', display: 'Female' },
+    { value: 'non-binary', display: 'Non-binary' },
+  ]
+
+  members: Member[] = []
+  pagination: Pagination | undefined
+  userParams: UserParams | undefined
+  user: User | undefined
+
+  resetFilters() {
+    if (this.user)
+      this.userParams = new UserParams(this.user)
+  }
 
   constructor(private accountService: AccountService, private memberService: MembersService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
@@ -37,11 +52,6 @@ export class MemberListComponent implements OnInit {
     this.loadMember()
   }
 
-  resetFilters() {
-    if (this.user)
-      this.userParams = new UserParams(this.user.gender)
-  }
-
   loadMember() {
     if (this.userParams) {
       this._saveParams()
@@ -55,7 +65,6 @@ export class MemberListComponent implements OnInit {
       })
     }
   }
-
   pageChanged(event: any) {
     if (!this.userParams) return
     if (this.userParams.pageNumber === event.page) return
@@ -65,9 +74,11 @@ export class MemberListComponent implements OnInit {
 
   private _saveParams() {
     if (this.user)
-      localStorage.setItem('userParams', JSON.stringify({ 
-              username: this.user.username, 
-              params: this.userParams 
-            }))
+      localStorage.setItem('userParams', JSON.stringify({
+        username: this.user.username,
+        params: this.userParams
+      }))
   }
 }
+
+

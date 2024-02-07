@@ -20,11 +20,6 @@ public class UserRepository : IUserRepository
         _dataContext = dataContext;
     }
 
-    public Task<ActionResult<MemberDto?>> GetMemberAsync(string username)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<MemberDto?> GetMemberByUserNameAsync(string username)
     {
         return await _dataContext.Users
@@ -55,11 +50,6 @@ public class UserRepository : IUserRepository
             query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider),
             userParams.PageNumber,
             userParams.PageSize);
-    }
-
-    public Task<MemberDto?> GetMember_By_user_name_Async(string username)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<AppUser?> GetUserByIdAsync(int id)
@@ -98,8 +88,7 @@ public class UserRepository : IUserRepository
 
     public void Update(AppUser user) => _dataContext.Entry(user).State = EntityState.Modified;
 
-    Task<ActionResult<MemberDto?>> IUserRepository.GetMemberByUserNameAsync(string username)
-    {
-        throw new NotImplementedException();
-    }
+
+
+
 }
